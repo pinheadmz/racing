@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html manifest="cache.manifest">
+
+<html>
+<head>
+<!-- 
+***************************************
+*  designed by MATTHEW ZIPKIN 2012    *
+* matthew(dot)zipkin(at)gmail(dot)com *
+***************************************
+-->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Racing</title>
+	
+<link type="text/css" href="css/racing.css" rel="stylesheet" />
+<link type="text/css" href="include/jquery-ui-1.9.2.custom.css" rel="stylesheet" />
+
+<!-- for mobile -->
+<meta id='VP' name='viewport' content='width=device-width, user-scalable=no, initial-scale=1, minimum-scale=1, maximum-scale=1'>
+<meta name="apple-mobile-web-app-capable" content="yes"/>
+<script type="text/javascript">
+
+var VP = document.getElementById('VP');
+
+function resetZoom(){
+	switch (window.orientation){
+		case 0: case 180: // portrait
+			vpW = 780;
+			vpS = screen.width / vpW;
+			break;
+		case 90: case -90: // landscape
+			vpW = 1024;
+			vpS = screen.height / vpW;
+			break;
+		default:
+			vpW = 780;
+			vpS = screen.width / vpW;
+			break;
+	}
+	VP.setAttribute('content', 'width=' + vpW + ', user-scalable=no, initial-scale=' + vpS + ', minimum-scale=' + vpS + ', maximum-scale=' + vpS + '');
+	window.scrollTo(0,1);
+}
+
+window.onload = function(){resetZoom()};
+window.resize = function(){resetZoom();};
+window.onorientationchange = function(){resetZoom();};
+
+</script>
+<!-- end for mobile -->
+
+</head>
+<body>
+<div id='LoadImagesFirst' style='display:none'>
+	<img src='i/car_1.png'>
+	<img src='i/car_2.png'>
+	<img src='i/car_3.png'>
+	<img src='i/car_4.png'>
+	<img src='i/car_5.png'>
+	<img src='i/can.png'>
+	<img src='i/splash1.jpg'>
+	<img src='i/instructions4.jpg'>
+</div>
+<div id='menuc'>
+	<div id='inst'>
+		<br>
+		<img src='i/instructions4.jpg'><br>
+		<div id='instKeys' class='instText'>
+			<span>Mouse and Keyboard Arrow Keys: </span><br>
+			Up: FASTER<br>
+			Down: SLOWER<br>
+			Left / Right: STEERING<br>
+		</div>
+		<div id='instIpad' class='instText'>
+			<span>iOS Devices:</span> <br>
+			Touch Green Bar: FASTER<br>
+			Touch Red Bar: SLOWER<br>
+			Tilt device left / right: STEERING<br>
+		</div>
+
+		<ok-button>OK!</ok-button>
+	</div>
+	<div id='menu'>
+		<form><div id='carChoice'>
+		    	Choose a car:<br>
+		         	<input type="radio" name="car-choice" id="car-choice-1" value="1" checked="checked" />
+		         	<label for="car-choice-1"><img src='i/car_1.png'><br>Red</label>
+		
+		         	<input type="radio" name="car-choice" id="car-choice-2" value="2"  />
+		         	<label for="car-choice-2"><img src='i/car_2.png'><br>Silver</label>
+		
+		         	<input type="radio" name="car-choice" id="car-choice-3" value="3"  />
+		         	<label for="car-choice-3"><img src='i/car_3.png'><br>Blue</label>
+		
+		         	<input type="radio" name="car-choice" id="car-choice-4" value="4"  />
+		         	<label for="car-choice-4"><img src='i/car_4.png'><br>Yellow</label>
+		
+		         	<input type="radio" name="car-choice" id="car-choice-5" value="5"  />
+		         	<label for="car-choice-5"><img src='i/car_5.png'><br>White</label>
+		</div></form>
+	
+		<form><div id='courseChoice'>
+		    	Choose a course:<br>
+		         	<input type="radio" name="course-choice" id="course-choice-1" value="0" checked="checked" />
+		         	<label for="course-choice-1"><img src='i/course_1.png'><br>1</label>
+		
+		         	<input type="radio" name="course-choice" id="course-choice-2" value="1"  />
+		         	<label for="course-choice-2"><img src='i/course_2.png'><br>2</label>
+		
+		         	<input type="radio" name="course-choice" id="course-choice-3" value="2"  />
+		         	<label for="course-choice-3"><img src='i/course_3.png'><br>3</label>
+		</div></form>
+		
+		<label for="speedChoice">Maximum speed: </label>
+		<input type="text" id="speedChoice" style="border: 0; color: 'black'; font-weight: bold; font-size: 30px; width: 60px; background-color: #F8F8C8" value='10' readonly/>
+		<div id='speedChoiceSlider'></div>
+		<br>
+		<label for="speedChoice">Easy-ness (% of "correct" gas cans): </label>
+		<input type="text" id="easyChoice" style="border: 0; color: 'black'; font-weight: bold; font-size: 30px; width: 60px; background-color: #F8F8C8" value='50' readonly/>
+		<div id='easyChoiceSlider'></div>
+		<br>
+		<button>Play!</button>
+	</div>
+</div>
+
+
+
+
+<div id='mainc'>
+	<div id='board'>
+		<div id='splash'>
+			<div id='splashLoading'>Loading...</div>
+			<img src='i/splash1.jpg'>
+		</div>
+		<canvas id='c'></canvas>
+		<canvas id='map'></canvas>
+		<canvas id='mapLoc'></canvas>
+	</div>
+	<div id='panel'>
+		<div id='readout'>
+			<div id='gasC' class='readoutC'>Gas:<div id='gasBar' class='readoutBar'><div id='gasBarLine'></div></div></div>
+			<div id='speedC' class='readoutC'>Speed:<div id='speedBar' class='readoutBar'><div id='speedBarLine'></div></div></div>
+			<div id='keyC'><div id='key'>
+			</div></div>
+			
+		</div>
+		<div id='controls'>
+			<div id='gas' class='pedal' data-pedal='1'><span>FASTER</span></div>
+			<div id='brake' class='pedal' data-pedal='0'><span>SLOWER</span></div>
+		</div>
+	</div>
+</div>
+
+<!-- jQuery and jQuery UI for draggables, effects and cookies -->
+<script type="text/javascript" src="include/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="include/jquery.transit.min.js"></script>
+<script type="text/javascript" src="include/jquery-ui-1.9.2.custom.js"></script>
+<script type="text/javascript" src="include/jquery.ui.touch-punch.min.js"></script>
+
+<!-- application code -->
+<script type="text/javascript" src="js/racing.js"></script>
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-37930663-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+</body>
+</html>

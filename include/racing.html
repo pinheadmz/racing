@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html>
+<head>
+<!-- 
+***************************************
+*  designed by MATTHEW ZIPKIN 2012    *
+* matthew(dot)zipkin(at)gmail(dot)com *
+***************************************
+-->
+<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1" />
+<title>Racing</title>
+	
+<link type="text/css" href="css/racing.css" rel="stylesheet" />
+<link type="text/css" href="include/jquery-ui-1.9.2.custom.css" rel="stylesheet" />
+
+<meta name="viewport" content="user-scalable=no">
+</head>
+<body>
+<div id='LoadImagesFirst' style='display:none'>
+	<img src='i/car.png'>
+	<img src='i/can.png'>
+</div>
+<div id='menuc'>
+	Times-tables racing!<br>
+	<form><div id='carChoice'>
+	    	Choose a car:<br>
+	         	<input type="radio" name="car-choice" id="car-choice-1" value="1" checked="checked" />
+	         	<label for="car-choice-1"><img src='i/car_1.png'><br>Red</label>
+	
+	         	<input type="radio" name="car-choice" id="car-choice-2" value="2"  />
+	         	<label for="car-choice-2"><img src='i/car_2.png'><br>Silver</label>
+	
+	         	<input type="radio" name="car-choice" id="car-choice-3" value="3"  />
+	         	<label for="car-choice-3"><img src='i/car_3.png'><br>Blue</label>
+	
+	         	<input type="radio" name="car-choice" id="car-choice-4" value="4"  />
+	         	<label for="car-choice-4"><img src='i/car_4.png'><br>Yellow</label>
+	
+	         	<input type="radio" name="car-choice" id="car-choice-5" value="5"  />
+	         	<label for="car-choice-5"><img src='i/car_5.png'><br>White</label>
+	</div></form>
+
+
+
+	<form><div id='courseChoice'>
+	    	Choose a course:<br>
+	         	<input type="radio" name="course-choice" id="course-choice-1" value="0" checked="checked" />
+	         	<label for="course-choice-1"><img src='i/course_1.png'><br>1</label>
+	
+	         	<input type="radio" name="course-choice" id="course-choice-2" value="1"  />
+	         	<label for="course-choice-2"><img src='i/course_2.png'><br>2</label>
+	
+	         	<input type="radio" name="course-choice" id="course-choice-3" value="2"  />
+	         	<label for="course-choice-3"><img src='i/course_3.png'><br>3</label>
+	</div></form>
+	
+	<label for="speedChoice">Maximum speed: </label>
+	<input type="text" id="speedChoice" style="border: 0; color: 'black'; font-weight: bold; font-size: 30px; width: 60px; background-color: #F8F8C8" value='10' />
+	<div id='speedChoiceSlider'></div>
+	<br>
+	<label for="speedChoice">Easy-ness (# of "correct" gas cans): </label>
+	<input type="text" id="easyChoice" style="border: 0; color: 'black'; font-weight: bold; font-size: 30px; width: 60px; background-color: #F8F8C8" value='5' />
+	<div id='easyChoiceSlider'></div>
+	<br>
+	<button>Play!</button>
+
+
+</div>
+
+
+</div>
+
+<div id='mainc'>
+	<div id='board'>
+		<canvas id='c'></canvas>
+		<canvas id='map'></canvas>
+		<canvas id='mapLoc'></canvas>
+	</div>
+	<div id='panel'>
+		<div id='readout'>
+			<div id='gasC' class='readoutC'>Gas:<div id='gasBar' class='readoutBar'><div id='gasBarLine'></div></div></div>
+			<div id='speedC' class='readoutC'>Speed:<div id='speedBar' class='readoutBar'><div id='speedBarLine'></div></div></div>
+			<div id='keyC'><div id='key'>
+			</div></div>
+			
+		</div>
+		<div id='controls'>
+			<div id='gas' class='pedal' data-pedal='1'><span>FASTER</span></div>
+			<div id='brake' class='pedal' data-pedal='0'><span>SLOWER</span></div>
+		</div>
+	</div>
+</div>
+
+<!-- jQuery and jQuery UI for draggables, effects and cookies -->
+<script type="text/javascript" src="include/jquery-1.7.2.min.js"></script>
+<script type="text/javascript" src="include/jquery.transit.min.js"></script>
+<script type="text/javascript" src="include/jquery-ui-1.9.2.custom.js"></script>
+<script type="text/javascript" src="include/jquery.ui.touch-punch.min.js"></script>
+<script>
+	$(function() {
+		$( "#carChoice" ).buttonset();
+		$( "#courseChoice" ).buttonset();
+	});
+	$(function() {
+		$( "#speedChoiceSlider" ).slider({
+			value:10,
+			min: 2,
+			max: 25,
+			step: 1,
+			slide: function( event, ui ) {
+				$( "#speedChoice" ).val(ui.value );
+			}
+		});
+		$( "#easyChoiceSlider" ).slider({
+			value:5,
+			min: 1,
+			max: 10,
+			step: 1,
+			slide: function( event, ui ) {
+				$( "#easyChoice" ).val(ui.value );
+			}
+		});
+	});
+	$(function() {
+		$( "button" )
+			.button()
+			.click(function( event ) {
+				event.preventDefault();	
+				menuSet();
+				$('#menuc').slideUp(); $('#mainc').slideDown();
+				gameStart();
+		});
+	});
+</script>
+
+
+
+<!-- application code -->
+<script type="text/javascript" src="js/racing.js"></script>
+
+
+</body>
+</html>

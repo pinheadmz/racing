@@ -1,0 +1,25 @@
+CACHE MANIFEST
+# v1 3.8.13
+
+CACHE:
+racing.html
+css/racing.css
+include/jquery-ui-1.9.2.custom.css
+include/jquery-1.7.2.min.js
+include/jquery.ui.touch-punch.min.js
+include/jquery.transit.min.js
+js/racing.js
+include/jquery-ui-1.9.2.custom.js
+i/car_1.png
+i/car_5.png
+i/car_4.png
+i/car_2.png
+i/can.png
+i/car_3.png
+i/course_3.png
+i/course_2.png
+i/instructions4.jpg
+i/splash1.jpg
+i/course_1.png
+i/car.png
+i/checkered.jpg
